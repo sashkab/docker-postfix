@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  smtp:
+    build:
+        context: ./
+        dockerfile: Dockerfile
+    hostname: HOSTNAME
+    volumes:
+      - ./cert.pem:/etc/ssl/cert.pem:ro
+      - ./key.pem:/etc/ssl/key.pem:ro
+      - postfix:/var/spool/postfix
+    environment:
+      - SMTP_SERVER=RELAY_HOST
+      - SMTP_USERNAME=username
+      - SMTP_PASSWORD=password
+      - MY_NETWORKS=192.168.0.0/24
+      - ROOT_ALIAS=EMAIL@HOSTNAME
+    ports:
+      - "25:25/tcp"
+      - "587:587/tcp"
+    restart: always
+
+volumes:
+  postfix:
