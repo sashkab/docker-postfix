@@ -1,4 +1,6 @@
 #!/bin/bash
 set -e
 
+rm -f /var/run/rsyslogd.pid
+
 exec rsyslogd -n
