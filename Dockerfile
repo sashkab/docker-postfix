@@ -1,8 +1,8 @@
-FROM alpine:3.8
+FROM alpine:3.9
 
 LABEL \
     maintainer="github@compuix.com" \
-    version="2018.10.23" \
+    version="2019.02.15" \
     description="SMTP relay server for local subnets."
 
 RUN set -xe \
@@ -26,3 +26,4 @@ EXPOSE 25/tcp 587/tcp
 STOPSIGNAL SIGKILL
 
 ENTRYPOINT ["/usr/sbin/runit_bootstrap"]
+
