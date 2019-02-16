@@ -8,7 +8,8 @@ LABEL \
 RUN set -xe \
     && addgroup -g 587 postfix && adduser -D -H -h /etc/postfix -g postfix -u 587 -G postfix postfix \
     && addgroup -g 465 postdrop && adduser -D -H -h /var/mail/domains -g postdrop -u 465 -G postdrop vmail \
-    && apk add --no-cache bash ca-certificates libsasl postfix rsyslog runit \
+    && apk add --no-cache bash ca-certificates libsasl cyrus-sasl-plain cyrus-sasl-login postfix rsyslog runit \
+    && mkdir mkdir /etc/sasl2 \
     && touch /var/log/maillog \
     && postalias /etc/postfix/aliases \
     && sed -i -r -e 's/^#submission/submission/' /etc/postfix/master.cf \
@@ -26,4 +27,3 @@ EXPOSE 25/tcp 587/tcp
 STOPSIGNAL SIGKILL
 
 ENTRYPOINT ["/usr/sbin/runit_bootstrap"]
-

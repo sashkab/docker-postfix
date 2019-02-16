@@ -1,7 +1,8 @@
 # This configuration was modified from Mailinabox. The original version is available at:
 # https://github.com/mail-in-a-box/mailinabox/blob/master/conf/postfix_outgoing_mail_header_filters
 
-/^\s*Received:.+by (.*)/         REPLACE Received: from authenticated-user by $1
+# /^\s*Received:.+by (.*)/         REPLACE Received: from authenticated-user by $1
+/^\s*Received:.+by (.*)/         IGNORE
 
 # Remove other typically private information.
 /^\s*User-Agent:/        IGNORE
