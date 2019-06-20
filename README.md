@@ -44,7 +44,6 @@ Some ideas where found and sometimes copied from the following projects:
 
 This is open source project. If you find a bug or have a suggestion, please open issue, or submit a pull request.
 
-
 [1]: https://letsencrypt.org
 [2]: https://github.com/Neilpang/acme.sh
 [3]: https://major.io/2013/04/14/remove-sensitive-information-from-email-headers-with-postfix/
