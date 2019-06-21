@@ -4,11 +4,11 @@ There are many docker images available for postfix, but I could not fine one whi
 
 ## Warning
 
-This is open relay server, so do not host it on public interfaces.
+If configured incorrectly, this can become an open relay SMTP server, so hosting it on public interfaces is not advisable.
 
 ## Why
 
-If you have devices which can send notifications, but does not support SMTP authentication, or SMTP authentication is broken -- open relay can help. It will relay via another SMTP server. `Received` header will be hidden, so your internal network information won't leak.
+If you have devices which can send notifications, but does not support SMTP authentication, or SMTP authentication is broken -- relay SMTP server can help. It will relay via upstream SMTP server. `Received` header will be hidden, so your internal network information won't leak.
 
 ## Usage
 
@@ -43,7 +43,6 @@ Some ideas where found and sometimes copied from the following projects:
 ## Bug reports and pull requests
 
 This is open source project. If you find a bug or have a suggestion, please open issue, or submit a pull request.
-
 
 [1]: https://letsencrypt.org
 [2]: https://github.com/Neilpang/acme.sh

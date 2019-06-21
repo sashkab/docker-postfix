@@ -21,6 +21,7 @@ postconf -e "inet_interfaces=all" \
             "relay_domains=" \
             "message_size_limit=104857600" \
             "mailbox_size_limit=104857600" \
+            "maillog_file = /dev/stdout" \
             "smtpd_tls_loglevel=1" \
             "smtp_tls_loglevel=1" \
             "smtpd_tls_received_header=yes" \
@@ -56,4 +57,5 @@ if [[ ! -z "$ROOT_ALIAS" ]]; then
 fi
 
 "$command_directory"/postfix check 2>&1
-exec "$daemon_directory"/master 2>&1
+
+exec "$command_directory"/postfix start-fg
