@@ -15,7 +15,7 @@ RUN set -xe \
     && sed -i -r -e 's/^#submission/submission/' /etc/postfix/master.cf \
     && chown root:root /var/spool/postfix /var/spool/postfix/pid
 
-COPY ["header_checks", "dh512.pem", "dh2048.pem", "/etc/postfix/"]
+COPY ["header_checks", "/etc/postfix/"]
 COPY ["run_postfix", "/"]
 
 RUN	chmod 644 /etc/postfix/dh*.pem /etc/postfix/header_checks \

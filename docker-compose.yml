@@ -9,6 +9,8 @@ services:
     volumes:
       - ./cert.pem:/etc/ssl/cert.pem:ro
       - ./key.pem:/etc/ssl/key.pem:ro
+      - ./dh512.pem:/etc/postfix/dh512.pem:ro
+      - ./dh2048.pem:/etc/postfix/dh2048.pem:ro
       - postfix:/var/spool/postfix
     environment:
       - SMTP_SERVER=RELAY_HOST
