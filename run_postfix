@@ -2,7 +2,6 @@
 set -e
 
 command_directory=$(postconf -h command_directory)
-daemon_directory=$("$command_directory"/postconf -h daemon_directory)
 config_directory=$(postconf -h config_directory)
 
 mkdir -p /etc/ssl
@@ -48,7 +47,7 @@ echo "${SMTP_SERVER}    ${SMTP_USERNAME}:${SMTP_PASSWORD}" > "$config_directory/
 
 postmap "$config_directory/header_checks"
 
-if [[ ! -z "$ROOT_ALIAS" ]]; then
+if [[ -n "$ROOT_ALIAS" ]]; then
     if [[ -f /etc/aliases ]]; then
         sed -i '/^root:/d' /etc/aliases
     fi
