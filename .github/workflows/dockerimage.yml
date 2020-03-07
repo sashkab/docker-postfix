@@ -1,0 +1,41 @@
+name: Build docker-postfix image
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+  schedule:
+    - cron: '0 12 * * 5'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: generate certificates
+      run: |
+        sudo apt-get -y install rng-tools
+        openssl dhparam -out dh512.pem 512
+        openssl dhparam -out dh2048.pem 2048
+        chmod 644 dh512.pem dh2048.pem
+        openssl req -nodes -newkey rsa:2048 -x509 -keyout key.pem -out cert.pem -days 90 -subj '/CN=localhost'
+
+    - name: build and start
+      run: |
+        docker-compose -p smtp -f docker-compose.yml up --build -d
+        sleep 10s
+
+    - name: check running containers
+      run: docker ps -a
+
+    - name: show logs
+      run: docker-compose -p smtp logs
+
+    - name: stop and cleanup
+      run: |
+          docker-compose -p smtp down
+          docker volume rm smtp_postfix
