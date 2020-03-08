@@ -31,6 +31,7 @@ jobs:
 
     - name: check running containers
       run: |
+        set -ex
         docker ps -a
         echo -e "EHLO user@domain\nquit" | nc localhost 25
         echo -e "EHLO user@domain\nquit" | nc localhost 587
