@@ -29,7 +29,7 @@ openssl dhparam -out dh512.tmp 512 && mv dh512.tmp dh512.pem
 openssl dhparam -out dh2048.tmp 2048 && mv dh2048.tmp dh2048.pem
 ```
 
-Request SSL certificate from [Let's Encrypt][1] using [acme.sh][2] or any other tool, and save certificate as `cert.pem` and private key as `key.pem` in the root of the repository.
+Request SSL certificate from [Let's Encrypt][1] using [lego][2] or any other tool, and save certificate as `cert.pem` and private key as `key.pem` in the root of the repository.
 
 ## Thanks
 
@@ -45,7 +45,7 @@ Some ideas where found and sometimes copied from the following projects:
 This is open source project. If you find a bug or have a suggestion, please open issue, or submit a pull request.
 
 [1]: https://letsencrypt.org
-[2]: https://github.com/Neilpang/acme.sh
+[2]: https://github.com/go-acme/lego
 [3]: https://major.io/2013/04/14/remove-sensitive-information-from-email-headers-with-postfix/
 [4]: https://github.com/mail-in-a-box/mailinabox/blob/master/conf/postfix_outgoing_mail_header_filters
 [5]: http://www.postfix.org/FORWARD_SECRECY_README.html
