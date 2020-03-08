@@ -55,8 +55,15 @@ if [[ -n "$ROOT_ALIAS" ]]; then
     newaliases
 fi
 
-cp /staging/dh*.pem "$config_directory/" && chown root "$config_directory/"dh*.pem \
-    && chmod 644 "$config_directory/"dh*.pem
+if [ ! -e "$config_directory/dh512.pem" ]; then
+    openssl dhparam -out "$config_directory/dh512.pem"
+    chmod 644 "$config_directory/dh512.pem"
+fi
+if [ ! -e "$config_directory/dh2048.pem" ]; then
+    openssl dhparam -out "$config_directory/dh2048.pem"
+    chmod 644 "$config_directory/dh2048.pem"
+fi
+
 mv /staging/header_checks "$config_directory/header_checks" \
     && chmod 644 "$config_directory/header_checks"
 
