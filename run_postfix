@@ -64,6 +64,8 @@ if [ ! -e "$config_directory/dh2048.pem" ]; then
     chmod 644 "$config_directory/dh2048.pem"
 fi
 
+ls -la "$config_directory"/dh*
+
 mv /staging/header_checks "$config_directory/header_checks" \
     && chmod 644 "$config_directory/header_checks"
 
