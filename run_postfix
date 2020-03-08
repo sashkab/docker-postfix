@@ -56,11 +56,13 @@ if [[ -n "$ROOT_ALIAS" ]]; then
 fi
 
 if [ ! -e "$config_directory/dh512.pem" ]; then
-    openssl dhparam -out "$config_directory/dh512.pem" 2>&1
+    openssl dhparam -out "$config_directory/dh512.tmp" 2>&1 \
+        && mv "$config_directory/dh512.tmp" "$config_directory/dh512.pem"
     chmod 644 "$config_directory/dh512.pem"
 fi
 if [ ! -e "$config_directory/dh2048.pem" ]; then
-    openssl dhparam -out "$config_directory/dh2048.pem" 2>&1
+    openssl dhparam -out "$config_directory/dh2048.tmp" 2>&1 \
+        && mv "$config_directory/dh2048.tmp" "$config_directory/dh2048.pem"
     chmod 644 "$config_directory/dh2048.pem"
 fi
 
