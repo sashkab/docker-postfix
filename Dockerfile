@@ -15,11 +15,10 @@ RUN set -xe \
     && sed -i -r -e 's/^#submission/submission/' /etc/postfix/master.cf \
     && chown root:root /var/spool/postfix /var/spool/postfix/pid
 
-COPY ["header_checks", "/etc/postfix/"]
+COPY ["header_checks", "/staging"]
 COPY ["run_postfix", "/"]
 
-RUN	chmod 644 /etc/postfix/dh*.pem /etc/postfix/header_checks \
-    && chmod +x /run_postfix
+RUN	chmod +x /run_postfix
 
 EXPOSE 25/tcp 587/tcp
 
