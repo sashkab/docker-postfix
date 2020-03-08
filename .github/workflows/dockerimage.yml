@@ -24,7 +24,7 @@ jobs:
     - name: build and start
       run: |
         docker-compose -p smtp -f docker-compose.yml up --build -d
-        sleep 10s
+        sleep 30s
 
     - name: show logs
       run: docker-compose -p smtp logs
