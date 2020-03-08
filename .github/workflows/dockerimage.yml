@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: generate certificates
+    - name: generate certificates and dhparam
       run: |
         sudo apt-get -y install rng-tools
         openssl dhparam -out dh512.pem 512
@@ -27,10 +27,11 @@ jobs:
     - name: build and start
       run: |
         docker-compose -p smtp -f docker-compose.yml up --build -d
-        sleep 10s
+        sleep 20s
 
     - name: check running containers
       run: |
+        set -ex
         docker ps -a
         echo -e "EHLO user@domain\nquit" | nc localhost 25
         echo -e "EHLO user@domain\nquit" | nc localhost 587
