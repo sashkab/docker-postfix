@@ -55,6 +55,8 @@ if [[ -n "$ROOT_ALIAS" ]]; then
     newaliases
 fi
 
+cp /staging/dh*.pem "$config_directory/" && chown root "$config_directory/"dh*.pem \
+    && chmod 644 "$config_directory/"dh*.pem
 mv /staging/header_checks "$config_directory/header_checks" \
     && chmod 644 "$config_directory/header_checks"
 

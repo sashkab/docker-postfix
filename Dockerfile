@@ -15,7 +15,7 @@ RUN set -xe \
     && sed -i -r -e 's/^#submission/submission/' /etc/postfix/master.cf \
     && chown root:root /var/spool/postfix /var/spool/postfix/pid
 
-COPY ["header_checks", "/staging"]
+COPY ["header_checks", "/staging/header_checks"]
 COPY ["run_postfix", "/"]
 
 RUN	chmod +x /run_postfix
