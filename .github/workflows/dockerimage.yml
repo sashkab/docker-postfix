@@ -30,7 +30,10 @@ jobs:
         sleep 10s
 
     - name: check running containers
-      run: docker ps -a
+      run: |
+        docker ps -a
+        echo -e "EHLO user@domain\nquit" | nc localhost 25
+        echo -e "EHLO user@domain\nquit" | nc localhost 587
 
     - name: show logs
       run: docker-compose -p smtp logs
