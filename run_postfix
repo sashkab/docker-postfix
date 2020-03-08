@@ -45,8 +45,6 @@ echo "${SMTP_SERVER}    ${SMTP_USERNAME}:${SMTP_PASSWORD}" > "$config_directory/
     && postmap "$config_directory/sasl_passwd" \
     && rm "$config_directory/sasl_passwd"
 
-postmap "$config_directory/header_checks"
-
 if [[ -n "$ROOT_ALIAS" ]]; then
     if [[ -f /etc/aliases ]]; then
         sed -i '/^root:/d' /etc/aliases
@@ -59,6 +57,7 @@ cp /staging/dh*.pem "$config_directory/" && chown root "$config_directory/"dh*.p
     && chmod 644 "$config_directory/"dh*.pem
 mv /staging/header_checks "$config_directory/header_checks" \
     && chmod 644 "$config_directory/header_checks"
+postmap "$config_directory/header_checks"
 
 "$command_directory"/postfix check 2>&1
 
