@@ -14,6 +14,13 @@ env:
   IMAGE_NAME: docker-postfix
 
 jobs:
+
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v2
+        - uses: docker://github/super-linter:v2.1.0
+
   test:
     runs-on: ubuntu-latest
 
