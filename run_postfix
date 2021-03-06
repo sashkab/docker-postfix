@@ -11,7 +11,7 @@ postconf -e "inet_interfaces=all" \
             "mynetworks=${MY_NETWORKS}" \
             "relayhost=${SMTP_SERVER}" \
             "smtp_sasl_auth_enable=yes" \
-            "smtp_sasl_password_maps=hash:$config_directory/sasl_passwd" \
+            "smtp_sasl_password_maps=lmdb:$config_directory/sasl_passwd" \
             "smtp_sasl_mechanism_filter=AUTH LOGIN" \
             "smtp_sasl_security_options=" \
             "smtputf8_enable=no" \
@@ -28,8 +28,8 @@ postconf -e "inet_interfaces=all" \
             "smtpd_tls_protocols=!SSLv2,!SSLv3" \
             "smtpd_use_tls=yes" \
             "smtp_use_tls=yes" \
-            "smtpd_tls_session_cache_database=btree:\${data_directory}/smtpd_scache" \
-            "smtp_tls_session_cache_database=btree:\${data_directory}/smtp_scache" \
+            "smtpd_tls_session_cache_database=lmdb:\${data_directory}/smtpd_scache" \
+            "smtp_tls_session_cache_database=lmdb:\${data_directory}/smtp_scache" \
             "smtpd_tls_cert_file=/etc/ssl/cert.pem" \
             "smtpd_tls_key_file=/etc/ssl/key.pem" \
             "smtp_tls_CApath=/etc/ssl/certs" \
@@ -41,9 +41,7 @@ postconf -e "inet_interfaces=all" \
             "header_checks=regexp:$config_directory/header_checks" \
             "smtpd_forbidden_commands=CONNECT,GET,POST,USER,PASS"
 
-echo "${SMTP_SERVER}    ${SMTP_USERNAME}:${SMTP_PASSWORD}" > "$config_directory/sasl_passwd"  \
-    && postmap "$config_directory/sasl_passwd" \
-    && rm "$config_directory/sasl_passwd"
+echo "${SMTP_SERVER}    ${SMTP_USERNAME}:${SMTP_PASSWORD}" | postmap -i "lmdb:/$config_directory/sasl_passwd"
 
 if [[ -n "$ROOT_ALIAS" ]]; then
     if [[ -f /etc/aliases ]]; then
