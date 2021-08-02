@@ -16,7 +16,6 @@ postconf -e "inet_interfaces=all" \
             "smtp_sasl_security_options=" \
             "smtputf8_enable=no" \
             "smtp_destination_rate_delay=1" \
-            "mydestination=" \
             "relay_domains=" \
             "message_size_limit=104857600" \
             "mailbox_size_limit=104857600" \
@@ -44,11 +43,11 @@ postconf -e "inet_interfaces=all" \
 echo "${SMTP_SERVER}    ${SMTP_USERNAME}:${SMTP_PASSWORD}" | postmap -i "lmdb:/$config_directory/sasl_passwd"
 
 if [[ -n "$ROOT_ALIAS" ]]; then
-    if [[ -f /etc/aliases ]]; then
-        sed -i '/^root:/d' /etc/aliases
+    if [[ -f /etc/postfix/aliases ]]; then
+        sed -i '/^root:/d' /etc/postfix/aliases
     fi
-    echo "root: $ROOT_ALIAS" >> /etc/aliases
-    newaliases
+    echo "root: $ROOT_ALIAS" >> /etc/postfix/aliases
+    /usr/bin/newaliases
 fi
 
 cp /staging/dh*.pem "$config_directory/" && chown root "$config_directory/"dh*.pem \
