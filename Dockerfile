@@ -34,4 +34,4 @@ STOPSIGNAL SIGKILL
 
 ENTRYPOINT ["/run_postfix"]
 
-HEALTHCHECK --interval=60s --timeout=30s --start-period=5s --retries=3 CMD [ "/healthcheck" ]
+HEALTHCHECK --interval=60s --timeout=30s --start-period=5s --retries=3 CMD [ "/healthcheck", '-all']
