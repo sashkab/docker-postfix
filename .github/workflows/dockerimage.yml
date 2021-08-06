@@ -77,11 +77,11 @@ jobs:
 
     - name: Push image
       run: |
-        IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
-        VERSION=$(date "+%Y.%m.%d")
-        echo IMAGE_ID=$IMAGE_ID
-        echo VERSION=$VERSION
-        docker tag image $IMAGE_ID:$VERSION
-        docker push $IMAGE_ID:$VERSION
-        docker tag $IMAGE_ID:$VERSION $IMAGE_ID:latest
-        docker push $IMAGE_ID:latest
+        IMAGE_ID="docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME"
+        VERSION="$(date +%Y.%m.%d)"
+        echo IMAGE_ID="$IMAGE_ID"
+        echo VERSION="$VERSION"
+        docker tag image "$IMAGE_ID:$VERSION"
+        docker push "$IMAGE_ID:$VERSION"
+        docker tag "$IMAGE_ID:$VERSION" "$IMAGE_ID:latest"
+        docker push "$IMAGE_ID:latest"
