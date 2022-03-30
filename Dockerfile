@@ -1,6 +1,6 @@
-FROM alpine:3.15.1
+FROM alpine:3.15.3
 
-LABEL maintainer="github@compuix.com" version="2022.03.22" description="SMTP relay server for local subnets."
+LABEL maintainer="github@compuix.com" version="2022.03.30" description="SMTP relay server for local subnets."
 
 RUN set -xe \
     && addgroup -g 587 postfix && adduser -D -H -h /etc/postfix -g postfix -u 587 -G postfix postfix \
