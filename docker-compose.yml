@@ -7,8 +7,8 @@ services:
         dockerfile: Dockerfile
     hostname: HOSTNAME
     volumes:
-      - ./cert.pem:/etc/ssl/cert.pem:ro
-      - ./key.pem:/etc/ssl/key.pem:ro
+      - ./cert.pem:/etc/ssl/server/cert.pem:ro
+      - ./key.pem:/etc/ssl/server/key.pem:ro
       - ./dh512.pem:/staging/dh512.pem:ro
       - ./dh2048.pem:/staging/dh2048.pem:ro
       - postfix:/var/spool/postfix
