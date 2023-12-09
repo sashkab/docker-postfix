@@ -1,8 +1,8 @@
-FROM alpine:3.18.5
+FROM alpine:3.19.0
 
 LABEL \
     maintainer="github@compuix.com" \
-    version="2023.11.30" \
+    version="2023.12.08" \
     description="SMTP relay server for local subnets."
 
 RUN set -xe \
