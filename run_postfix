@@ -19,32 +19,32 @@ postconf -e "inet_interfaces=all" \
             "relay_domains=" \
             "message_size_limit=104857600" \
             "mailbox_size_limit=104857600" \
-            "maillog_file = /dev/stdout" \
+            "maillog_file=/dev/stdout" \
             "smtpd_tls_loglevel=1" \
             "smtp_tls_loglevel=1" \
             "smtpd_tls_received_header=yes" \
             "smtpd_tls_ciphers=high" \
             "smtpd_tls_protocols=!SSLv2,!SSLv3" \
             "smtpd_tls_security_level=may" \
-            "smtp_tls_security_level=may \
+            "smtp_tls_security_level=may" \
             "smtpd_tls_session_cache_database=lmdb:\${data_directory}/smtpd_scache" \
             "smtp_tls_session_cache_database=lmdb:\${data_directory}/smtp_scache" \
             "smtpd_tls_cert_file=/etc/ssl/server/cert.pem" \
             "smtpd_tls_key_file=/etc/ssl/server/key.pem" \
             "smtp_tls_CApath=/etc/ssl/certs" \
             "smtpd_tls_CApath=/etc/ssl/certs" \
-            "always_add_missing_headers = yes" \
+            "always_add_missing_headers=yes" \
             "mime_header_checks=regexp:$config_directory/header_checks" \
             "header_checks=regexp:$config_directory/header_checks" \
             "smtpd_forbidden_commands=CONNECT,GET,POST,USER,PASS"
 
-echo "${SMTP_SERVER}    ${SMTP_USERNAME}:${SMTP_PASSWORD}" | postmap -i "lmdb:/$config_directory/sasl_passwd"
+echo "${SMTP_SERVER}    ${SMTP_USERNAME}:${SMTP_PASSWORD}" | postmap -i "lmdb:$config_directory/sasl_passwd"
 
-if [[ -n "$ROOT_ALIAS" ]]; then
+if [[ -n "${ROOT_ALIAS}" ]]; then
     if [[ -f /etc/postfix/aliases ]]; then
         sed -i '/^root:/d' /etc/postfix/aliases
     fi
-    echo "root: $ROOT_ALIAS" >> /etc/postfix/aliases
+    echo "root: ${ROOT_ALIAS}" >> /etc/postfix/aliases
     /usr/bin/newaliases
 fi
 
@@ -52,6 +52,6 @@ mv /staging/header_checks "$config_directory/header_checks" \
     && chmod 644 "$config_directory/header_checks"
 postmap "$config_directory/header_checks"
 
-"$command_directory"/postfix check 2>&1
+"${command_directory}/postfix" check 2>&1
 
-exec "$command_directory"/postfix start-fg
+exec "${command_directory}/postfix" start-fg
