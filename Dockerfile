@@ -5,7 +5,9 @@ LABEL \
     version="2024.06.07" \
     description="SMTP relay server for local subnets."
 
-RUN set -xe \
+    #checkov:skip=CKV_DOCKER_3: "Ensure that a user for the container has been created"
+
+    RUN set -xe \
     && addgroup -g 587 postfix && adduser -D -H -h /etc/postfix -g postfix -u 587 -G postfix postfix \
     && addgroup -g 465 postdrop && adduser -D -H -h /var/mail/domains -g postdrop -u 465 -G postdrop vmail \
     && apk add --no-cache bash ca-certificates libsasl cyrus-sasl-login postfix tzdata openssl \
