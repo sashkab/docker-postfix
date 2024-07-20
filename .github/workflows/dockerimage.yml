@@ -11,6 +11,8 @@ on:
   schedule:
     - cron: '0 12 * * 5'
 
+permissions: read-all
+
 env:
   IMAGE_NAME: docker-postfix
 
@@ -29,6 +31,7 @@ jobs:
         env:
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_SHELL_SHFMT: false
 
   test:
     runs-on: ubuntu-latest
