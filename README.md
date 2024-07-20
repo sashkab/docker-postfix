@@ -29,8 +29,7 @@ Request SSL certificate from [Let's Encrypt][1] using [lego][2] or any other too
 Some ideas where found and sometimes copied from the following projects:
 
 * [Headers check][3] and [mail-in-a-box][4]
-* [EDH parameters][5]
-* [runit][6]
+* [runit][5]
 * [mail-in-a-box][4]
 
 ## Bug reports and pull requests
@@ -41,4 +40,4 @@ This is open source project. If you find a bug or have a suggestion, please open
 [2]: https://github.com/go-acme/lego
 [3]: https://major.io/2013/04/14/remove-sensitive-information-from-email-headers-with-postfix/
 [4]: https://github.com/mail-in-a-box/mailinabox/blob/master/conf/postfix_outgoing_mail_header_filters
-[6]: https://github.com/jessfraz/dockerfiles/blob/master/postfix/service/postfix/run
+[5]: https://github.com/jessfraz/dockerfiles/blob/master/postfix/service/postfix/run
