@@ -1,12 +1,13 @@
+---
 name: Build docker-postfix image
 
 on:
   push:
     branches:
-    - master
+      - master
   pull_request:
     branches:
-    - master
+      - master
   schedule:
     - cron: '0 12 * * 5'
 
@@ -33,55 +34,52 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: generate certificates and dhparam
-      run: |
-        sudo apt-get -y install rng-tools
-        openssl dhparam -out dh512.pem 512
-        openssl dhparam -out dh2048.pem 2048
-        chmod 644 dh512.pem dh2048.pem
-        openssl req -nodes -newkey rsa:2048 -x509 -keyout key.pem -out cert.pem -days 90 -subj '/CN=localhost'
+      - uses: actions/checkout@v4
+      - name: generate certificates
+        run: |
+          sudo apt-get -y install rng-tools
+          openssl req -nodes -newkey rsa:2048 -x509 -keyout key.pem -out cert.pem -days 90 -subj '/CN=localhost'
 
-    - name: build and start
-      run: |
-        docker-compose -p smtp -f docker-compose.yml up --build -d
-        sleep 20s
+      - name: build and start
+        run: |
+          docker-compose -p smtp -f docker-compose.yml up --build -d
+          sleep 20s
 
-    - name: check running containers
-      run: |
-        set -ex
-        docker ps -a
-        echo -e "EHLO user@domain\r\nquit\r" | nc localhost 25
-        echo -e "EHLO user@domain\r\nquit\r" | nc localhost 587
+      - name: check running containers
+        run: |
+          set -ex
+          docker ps -a
+          echo -e "EHLO user@domain\r\nquit\r" | nc localhost 25
+          echo -e "EHLO user@domain\r\nquit\r" | nc localhost 587
 
-    - name: show logs
-      run: docker-compose -p smtp logs
+      - name: show logs
+        run: docker-compose -p smtp logs
 
-    - name: stop and cleanup
-      run: |
-          docker-compose -p smtp down
-          docker volume rm smtp_postfix
+      - name: stop and cleanup
+        run: |
+            docker-compose -p smtp down
+            docker volume rm smtp_postfix
 
   push:
     needs: test
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Log into registry
-      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
 
-    - name: Build image
-      run: docker build . --file Dockerfile --tag image
+      - name: Build image
+        run: docker build . --file Dockerfile --tag image
 
-    - name: Push image
-      run: |
-        IMAGE_ID="docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME"
-        VERSION="$(date +%Y.%m.%d)"
-        echo IMAGE_ID="$IMAGE_ID"
-        echo VERSION="$VERSION"
-        docker tag image "$IMAGE_ID:$VERSION"
-        docker push "$IMAGE_ID:$VERSION"
-        docker tag "$IMAGE_ID:$VERSION" "$IMAGE_ID:latest"
-        docker push "$IMAGE_ID:latest"
+      - name: Push image
+        run: |
+          IMAGE_ID="docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME"
+          VERSION="$(date +%Y.%m.%d)"
+          echo IMAGE_ID="$IMAGE_ID"
+          echo VERSION="$VERSION"
+          docker tag image "$IMAGE_ID:$VERSION"
+          docker push "$IMAGE_ID:$VERSION"
+          docker tag "$IMAGE_ID:$VERSION" "$IMAGE_ID:latest"
+          docker push "$IMAGE_ID:latest"

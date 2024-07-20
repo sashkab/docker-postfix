@@ -3,4 +3,5 @@ set -e
 
 echo | openssl s_client -verify_quiet -tls1_2 -connect localhost:25 -servername "${HOSTNAME}" -starttls smtp 2>/dev/null | openssl x509 -noout \
 && echo | openssl s_client -verify_quiet -tls1_2 -connect localhost:587 -servername "${HOSTNAME}" -starttls smtp 2>/dev/null | openssl x509 -noout \
-&& printf "EHLO healthcheck\n" | nc 0.0.0.0 587 | grep -qE "^220.*ESMTP Postfix"
+&& printf "EHLO healthcheck\nQUIT\n" > /tmp/testfile \
+&& while read -r line ; do sleep 0.5; echo "$line"; done < "/tmp/testfile" | nc 0.0.0.0 587 | grep -qE "^220.*ESMTP Postfix"
