@@ -45,7 +45,7 @@ jobs:
 
       - name: build and start
         run: |
-          docker-compose -p smtp -f docker-compose.yml up --build -d
+          docker compose -p smtp -f docker-compose.yml up --build -d
           sleep 20s
 
       - name: check running containers
@@ -56,11 +56,11 @@ jobs:
           echo -e "EHLO user@domain\r\nquit\r" | nc localhost 587
 
       - name: show logs
-        run: docker-compose -p smtp logs
+        run: docker compose -p smtp logs
 
       - name: stop and cleanup
         run: |
-            docker-compose -p smtp down
+            docker compose -p smtp down
             docker volume rm smtp_postfix
 
   push:

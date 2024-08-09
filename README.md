@@ -15,7 +15,7 @@ If you have devices which can send notifications, but does not support SMTP auth
 Modify `docker-compose.yml` with your settings. Then:
 
 ```sh
-docker-compose up -d
+docker compose up -d
 ```
 
 Configure email client to send email via your local SMTP server.
