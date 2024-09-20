@@ -1,13 +1,13 @@
-FROM alpine:3.20.2
+FROM alpine:3.20.3
 
 LABEL \
     maintainer="github@compuix.com" \
-    version="2024.07.23" \
+    version="2024.09.20" \
     description="SMTP relay server for local subnets."
 
-    #checkov:skip=CKV_DOCKER_3: "Ensure that a user for the container has been created"
+#checkov:skip=CKV_DOCKER_3: "Ensure that a user for the container has been created"
 
-    RUN set -xe \
+RUN set -xe \
     && addgroup -g 587 postfix && adduser -D -H -h /etc/postfix -g postfix -u 587 -G postfix postfix \
     && addgroup -g 465 postdrop && adduser -D -H -h /var/mail/domains -g postdrop -u 465 -G postdrop vmail \
     && apk add --no-cache bash ca-certificates libsasl cyrus-sasl-login postfix tzdata openssl \
@@ -17,12 +17,12 @@ LABEL \
     && sed -i -r -e 's/^#submission/submission/' /etc/postfix/master.cf \
     && chown root:root /var/spool/postfix /var/spool/postfix/pid \
     && wget -q -P /usr/local/share/ca-certificates/ \
-            https://letsencrypt.org/certs/lets-encrypt-r3.pem \
-            https://letsencrypt.org/certs/lets-encrypt-r3-cross-signed.pem \
-            https://letsencrypt.org/certs/lets-encrypt-e1.pem \
-            https://letsencrypt.org/certs/lets-encrypt-r4.pem \
-            https://letsencrypt.org/certs/lets-encrypt-r4-cross-signed.pem \
-            https://letsencrypt.org/certs/lets-encrypt-e2.pem  \
+    https://letsencrypt.org/certs/lets-encrypt-r3.pem \
+    https://letsencrypt.org/certs/lets-encrypt-r3-cross-signed.pem \
+    https://letsencrypt.org/certs/lets-encrypt-e1.pem \
+    https://letsencrypt.org/certs/lets-encrypt-r4.pem \
+    https://letsencrypt.org/certs/lets-encrypt-r4-cross-signed.pem \
+    https://letsencrypt.org/certs/lets-encrypt-e2.pem  \
     && update-ca-certificates
 
 COPY ["header_checks", "/staging/header_checks"]
