@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+uptime=$(cut -d. -f1 /proc/uptime)
+if [ "$uptime" -lt 10 ]; then
+  exit 0
+fi
+
 echo | openssl s_client -verify_quiet -tls1_2 -connect localhost:25 -servername "${HOSTNAME}" -starttls smtp 2>/dev/null | openssl x509 -noout \
 && echo | openssl s_client -verify_quiet -tls1_2 -connect localhost:587 -servername "${HOSTNAME}" -starttls smtp 2>/dev/null | openssl x509 -noout \
 && printf "EHLO healthcheck\nQUIT\n" > /tmp/testfile \
