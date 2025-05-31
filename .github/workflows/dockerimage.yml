@@ -9,7 +9,7 @@ on:
     branches:
       - master
   schedule:
-    - cron: '0 12 * * 5'
+    - cron: "0 12 * * 5"
 
 permissions: read-all
 
@@ -17,7 +17,6 @@ env:
   IMAGE_NAME: docker-postfix
 
 jobs:
-
   linter:
     runs-on: ubuntu-latest
     steps:
@@ -60,8 +59,8 @@ jobs:
 
       - name: stop and cleanup
         run: |
-            docker compose -p smtp down
-            docker volume rm smtp_postfix
+          docker compose -p smtp down
+          docker volume rm smtp_postfix
 
   push:
     needs: test
@@ -87,3 +86,16 @@ jobs:
           docker push "$IMAGE_ID:$VERSION"
           docker tag "$IMAGE_ID:$VERSION" "$IMAGE_ID:latest"
           docker push "$IMAGE_ID:latest"
+
+  cleanup:
+    needs: push
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - uses: actions/delete-package-versions@v5
+        with:
+          package-name: "${{ github.event.repository.name }}/docker-postfix"
+          package-type: "container"
+          min-versions-to-keep: 5
+          token: ${{ secrets.GITHUB_TOKEN }}

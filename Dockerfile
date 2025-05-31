@@ -1,11 +1,12 @@
-FROM alpine:3.21.2
+FROM alpine:3.22.0
 
 LABEL \
     maintainer="github@compuix.com" \
-    version="2025.01.14" \
+    version="2025.05.31" \
     description="SMTP relay server for local subnets."
 
 #checkov:skip=CKV_DOCKER_3: "Ensure that a user for the container has been created"
+# Let's Encrypt Certiciates - https://letsencrypt.org/certificates/
 
 RUN set -xe \
     && addgroup -g 587 postfix && adduser -D -H -h /etc/postfix -g postfix -u 587 -G postfix postfix \
@@ -17,12 +18,12 @@ RUN set -xe \
     && sed -i -r -e 's/^#submission/submission/' /etc/postfix/master.cf \
     && chown root:root /var/spool/postfix /var/spool/postfix/pid \
     && wget -q -P /usr/local/share/ca-certificates/ \
-    https://letsencrypt.org/certs/lets-encrypt-r3.pem \
-    https://letsencrypt.org/certs/lets-encrypt-r3-cross-signed.pem \
-    https://letsencrypt.org/certs/lets-encrypt-e1.pem \
-    https://letsencrypt.org/certs/lets-encrypt-r4.pem \
-    https://letsencrypt.org/certs/lets-encrypt-r4-cross-signed.pem \
-    https://letsencrypt.org/certs/lets-encrypt-e2.pem  \
+    https://letsencrypt.org/certs/2024/e5.pem \
+    https://letsencrypt.org/certs/2024/e5-cross.pem \
+    https://letsencrypt.org/certs/2024/e6.pem \
+    https://letsencrypt.org/certs/2024/e6-cross.pem \
+    https://letsencrypt.org/certs/2024/r10.pem \
+    https://letsencrypt.org/certs/2024/r11.pem \
     && update-ca-certificates
 
 COPY ["header_checks", "/staging/header_checks"]
