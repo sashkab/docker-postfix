@@ -1,8 +1,8 @@
-FROM alpine:3.23.3
+FROM alpine:3.23.4
 
 LABEL \
     maintainer="github@compuix.com" \
-    version="2026.01.28" \
+    version="2026.04.21" \
     description="SMTP relay server for local subnets."
 
 #checkov:skip=CKV_DOCKER_3: "Ensure that a user for the container has been created"
