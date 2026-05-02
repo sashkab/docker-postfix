@@ -54,4 +54,6 @@ postmap "$config_directory/header_checks"
 
 "${command_directory}/postfix" check 2>&1
 
+date +%s > /tmp/container_start
+
 exec "${command_directory}/postfix" start-fg
