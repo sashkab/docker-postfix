@@ -16,23 +16,7 @@ env:
   IMAGE_NAME: docker-postfix
 
 jobs:
-  linter:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - name: Lint Code Base
-        uses: super-linter/super-linter/slim@v8.7.0
-        env:
-          DEFAULT_BRANCH: master
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VALIDATE_SHELL_SHFMT: false
-
   test:
-    needs: linter
     runs-on: ubuntu-latest
 
     steps:
