@@ -50,19 +50,20 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       packages: write
     steps:
       - uses: actions/checkout@v7
 
       - name: Log into registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+        run: echo "${{ github.token }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build image
         run: docker build . --file Dockerfile --tag image
 
       - name: Push image
         run: |
-          IMAGE_ID="docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME"
+          IMAGE_ID=ghcr.io/${{ github.repository }}
           VERSION="$(date +%Y.%m.%d)"
           echo IMAGE_ID="$IMAGE_ID"
           echo VERSION="$VERSION"
@@ -73,13 +74,31 @@ jobs:
 
   cleanup:
     needs: push
-    runs-on: ubuntu-latest
     permissions:
+      contents: read
       packages: write
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/delete-package-versions@v5
-        with:
-          package-name: "${{ github.event.repository.name }}/docker-postfix"
-          package-type: "container"
-          min-versions-to-keep: 5
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Package cleanup
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OWNER: ${{ github.repository_owner }}
+          PACKAGE: ${{ github.event.repository.name }}
+          KEEP: 5
+        run: |
+          set -euo pipefail
+
+          gh api --paginate \
+            "/users/$OWNER/packages/container/$PACKAGE/versions?per_page=100" \
+            --jq '
+              .[]
+              | select((.metadata.container.tags // []) | index("latest") | not)
+              | .id
+            ' |
+            tail -n +"$((KEEP + 1))" |
+            while read -r id; do
+              echo "Deleting package version $id"
+              gh api \
+                --method DELETE \
+                "/users/$OWNER/packages/container/$PACKAGE/versions/$id"
+            done
